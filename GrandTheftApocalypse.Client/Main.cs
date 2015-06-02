@@ -103,18 +103,13 @@ namespace GrandTheftApocalypse.Client
 
             foreach (var zombie in this.zombies)
             {
-                // Make zeds move towards player -- Could be slow with lots of zeds
-                Function.Call(
-                    Hash.TASK_GO_STRAIGHT_TO_COORD,
-                    zombie.Handle,
-                    playerPos.X,
-                    playerPos.Y,
-                    playerPos.Z,
-                    zedSpeed,
-                    -1,
-                    0f,
-                    0f);
-                
+                if (this.zedsAreAggroed)
+                {
+                    // Make zeds move towards player
+                    // TODO -- replace this with pathfinding so that they go around obstacles
+                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, zombie.Handle, playerPos.X, playerPos.Y, playerPos.Z, zedSpeed, -1, 0f, 0f);
+                }
+
                 // Damage player if the zeds are too close
                 // TODO -- Add check if zombie is facing the player
                 if (!Game.Player.Character.IsInVehicle() && zombie.IsTouching(Game.Player.Character) && !zombie.IsDead)
