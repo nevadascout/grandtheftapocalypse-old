@@ -1,4 +1,7 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <StringProperty Name="MergeSettingsFiles">NoMerge</StringProperty>
+  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <Rules>
@@ -177,11 +180,21 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
+        <Rule Name="FileHeaderMustHaveValidCompanyText">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+        <Rule Name="FileHeaderFileNameDocumentationMustMatchTypeName">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
       </Rules>
       <AnalyzerSettings>
-        <StringProperty Name="CompanyName">JCKD (UK) Ltd</StringProperty>
-        <StringProperty Name="Copyright">Copyright (c) 2015. All Rights Reserved.
-Original code by Joe Cotton (nevada_scout)</StringProperty>
+        <StringProperty Name="CompanyName">nevada_scout</StringProperty>
+        <StringProperty Name="Copyright">Copyright (c) nevada_scout 2015. All Rights Reserved.
+This code is part of the GrandTheftApocalypse mod for GTA V.</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
@@ -195,6 +208,7 @@ Original code by Joe Cotton (nevada_scout)</StringProperty>
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
           <Value>fa</Value>
+          <Value>is</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>
@@ -211,6 +225,16 @@ Original code by Joe Cotton (nevada_scout)</StringProperty>
     <Analyzer AnalyzerId="StyleCop.CSharp.LayoutRules">
       <Rules>
         <Rule Name="CurlyBracketsMustNotBeOmitted">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.SpacingRules">
+      <Rules>
+        <Rule Name="SingleLineCommentsMustBeginWithSingleSpace">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

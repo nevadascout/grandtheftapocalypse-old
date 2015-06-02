@@ -1,4 +1,11 @@
-﻿namespace GrandTheftApocalypse.Client
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Main.cs" company="nevada_scout">
+//   Copyright (c) nevada_scout 2015. All Rights Reserved.
+//   This code is part of the GrandTheftApocalypse mod for GTA V.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace GrandTheftApocalypse.Client
 {
     using System;
     using System.Collections.Generic;
@@ -44,7 +51,6 @@
             Game.Player.Character.Weapons.Give(WeaponHash.GolfClub, 1, false, true);
             Game.Player.Character.Weapons.Give(WeaponHash.CarbineRifle, 2500, false, true);
             Game.Player.Character.Weapons.Give(WeaponHash.PumpShotgun, 1500, false, true);
-            Game.Player.Character.Weapons.Give(WeaponHash.HeavyShotgun, 1500, false, true);
 
             // Spawn vehicle
             World.Helpers.CreateDrivableVehicle(VehicleHash.Dubsta, new Vector3(382.2398f, 3181.735f, 52.69014f), Color.Black);
