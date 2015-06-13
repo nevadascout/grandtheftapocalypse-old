@@ -22,6 +22,8 @@ namespace GrandTheftApocalypse.Story
     {
         private PlayerProgress playerProgress;
 
+        private bool DEBUG = true;
+
         private bool isNight;
         private float zedSpeed = 1f; // 1f = Walk, 2f = jog, 3f = sprint
         private int zedDamage = 10;
@@ -71,26 +73,33 @@ namespace GrandTheftApocalypse.Story
             {
                 SaveFile.Save(this.playerProgress);
             }
-            
-            // TODO -- DEBUG
-            if (e.KeyCode == Keys.F5)
+
+            if (this.DEBUG)
             {
-                if (Game.Player.Character.IsInVehicle())
+                if (e.KeyCode == Keys.F6)
                 {
-                    UI.Notify("Saved vehicle position to log");
-
-                    var vehName = Game.Player.Character.CurrentVehicle.DisplayName;
-                    var position = Game.Player.Character.CurrentVehicle.Position;
-                    var heading = Game.Player.Character.CurrentVehicle.Heading;
-                    Logger.Log(string.Format("VEHICLE {0} POS: + {1} ## HEADING: {2}", vehName, position, heading));
+                    UI.Notify(this.isNight + " :: " + this.zedSpeed);
                 }
-                else
-                {
-                    UI.Notify("Saved player position to log");
 
-                    var position = Game.Player.Character.Position;
-                    var heading = Game.Player.Character.Heading;
-                    Logger.Log(string.Format("PLAYER POS: + {0} ## HEADING: {1}", position, heading));
+                if (e.KeyCode == Keys.F5)
+                {
+                    if (Game.Player.Character.IsInVehicle())
+                    {
+                        UI.Notify("Saved vehicle position to log");
+
+                        var vehName = Game.Player.Character.CurrentVehicle.DisplayName;
+                        var position = Game.Player.Character.CurrentVehicle.Position;
+                        var heading = Game.Player.Character.CurrentVehicle.Heading;
+                        Logger.Log(string.Format("VEHICLE {0} POS: + {1} ## HEADING: {2}", vehName, position, heading));
+                    }
+                    else
+                    {
+                        UI.Notify("Saved player position to log");
+
+                        var position = Game.Player.Character.Position;
+                        var heading = Game.Player.Character.Heading;
+                        Logger.Log(string.Format("PLAYER POS: + {0} ## HEADING: {1}", position, heading));
+                    }
                 }
             }
         }
@@ -161,45 +170,31 @@ namespace GrandTheftApocalypse.Story
                     // Check player is on main land
                     var zed = Zombie.Spawn();
                     this.zombies.Add(zed);
-
-                    Logger.Log("Spawning zombie");
                 }
 
-                this.lastZedUpdate = DateTime.Now + TimeSpan.FromMilliseconds(2000);
+                //this.lastZedUpdate = DateTime.Now + TimeSpan.FromMilliseconds(2000);
+                this.lastZedUpdate = DateTime.Now + TimeSpan.FromMilliseconds(500);
+                // TODO -- Check if this value is too low (changing from 2000 to 500 caused a zlib error almost immediately. Could be coincidence, not sure.
             }
 
-            //for (int i = this.zombies.Count - 1; i >= 0; i--)
-            //{
-            //    var distanceToPlayer = this.zombies[i].Position.DistanceTo(Game.Player.Character.Position);
-
-            //    if (distanceToPlayer >= 150f || this.zombies[i].IsDead)
-            //    {
-            //        //this.zombies.RemoveAt(i);
-            //        //this.zombies[i].Delete();
-
-            //        Logger.Log("Cleanup zombie");
-            //    }
-            //}
-
-            var zedsToRemove = new List<Ped>();
-
-            // Cleanup dead or zeds too far away
-            foreach (var zombie in this.zombies)
+            for (int i = this.zombies.Count - 1; i >= 0; i--)
             {
-                var distanceToPlayer = zombie.Position.DistanceTo(player.Position);
+                var distanceToPlayer = this.zombies[i].Position.DistanceTo(player.Position);
 
-                if ((distanceToPlayer >= 150f || zombie.IsDead)) // && !zombie.IsOnScreen)
+                if (distanceToPlayer >= 150f || this.zombies[i].IsDead)
                 {
-                    zedsToRemove.Add(zombie);
-                    zombie.MarkAsNoLongerNeeded();
+                    this.zombies.RemoveAt(i);
 
-                    Logger.Log("Cleanup zombie");
+                    // if (this.DEBUG) UI.Notify("CLEANUP ZED");
                 }
-            }
+                else
+                {
+                    // Pathfind towards player
+                    var zed = this.zombies[i];
+                    var playerPos = player.Position;
 
-            foreach (var ped in zedsToRemove)
-            {
-                this.zombies.Remove(ped);
+                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, zed.Handle, playerPos.X, playerPos.Y, playerPos.Z, this.zedSpeed, -1, 0f, 0f);
+                }
             }
         }
 

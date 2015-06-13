@@ -22,6 +22,8 @@ namespace GrandTheftApocalypse.Story.Peds
             var groundHeight = World.GetGroundHeight(zed.Position);
             zed.Position = new Vector3(zed.Position.X, zed.Position.Y, groundHeight);
 
+            zed.IsPersistent = false;
+
             Function.Call(Hash.SET_PED_DEFAULT_COMPONENT_VARIATION, zed);
 
             var blip = zed.AddBlip();
